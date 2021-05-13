@@ -2,11 +2,16 @@ package com.iot.admin.admin.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
@@ -18,15 +23,16 @@ import org.hibernate.annotations.UpdateTimestamp;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @NoArgsConstructor
 @Entity
-public class Gateway {
-    
+public class Device {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(unique = true,length = 10, nullable = false)
     private String tag;
 
@@ -34,11 +40,9 @@ public class Gateway {
     private String name;
 
     private String description;
-    
-    @Column(nullable = false,columnDefinition = "tinyint(1) default 0")
-    private Boolean enabled=false;
 
-    private  String ip_address;
+    @Column(nullable = false,columnDefinition = "tinyint(1) default 0") 
+    private Boolean enabled=false;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -46,7 +50,17 @@ public class Gateway {
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;    
+    private Date updatedAt;
+
+    @Enumerated(EnumType.STRING)
+    private DeviceType device_type;
+
+    @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Device device_parent;
+
+    @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Gateway gateway;
+    
 
     /*
     * This method is executed before create
@@ -63,7 +77,7 @@ public class Gateway {
     protected void onUpdate(){
         tag = tag.toUpperCase();
     }
-    
-    
 
+
+    
 }
