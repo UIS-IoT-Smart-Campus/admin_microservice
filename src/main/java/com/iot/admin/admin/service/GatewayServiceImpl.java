@@ -31,8 +31,8 @@ public class GatewayServiceImpl implements GatewayService {
     public GatewayDetails create(GatewayForm formData) {
         
         //Database Validations
-        validateField(formData);       
-
+        validateField(formData);    
+        
         Gateway gateway = formData.getEntity();
         GatewayDetails details = new GatewayDetails();
         details.setEntity(repository.save(gateway));
