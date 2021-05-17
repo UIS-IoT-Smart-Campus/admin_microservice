@@ -53,10 +53,10 @@ public class Device {
     private Date updatedAt;
 
     @Enumerated(EnumType.STRING)
-    private DeviceType device_type;
+    private DeviceType deviceType;
 
     @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Device device_parent;
+    private Device deviceParent;
 
     @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Gateway gateway;

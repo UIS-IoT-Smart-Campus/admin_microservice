@@ -35,8 +35,8 @@ public class DeviceDetails {
         description = device.getDescription();
         createdAt = device.getCreatedAt();
         updateAt = device.getUpdatedAt();
-        if (device.getDevice_parent() != null) {
-            device_parent = device.getDevice_parent().getId();
+        if (device.getDeviceParent() != null) {
+            device_parent = device.getDeviceParent().getId();
         }
         if (device.getGateway() != null) {
             gateway = device.getGateway().getId();

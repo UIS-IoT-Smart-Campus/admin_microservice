@@ -34,7 +34,7 @@ public class DeviceForm {
         device.setTag(tag);
         device.setName(name);
         device.setDescription(description);
-        device.setDevice_type(device_type);
+        device.setDeviceType(device_type);
         //device.setDevice_parent(device_parent);
         //device.setGateway(gateway);
         return device;
@@ -44,7 +44,7 @@ public class DeviceForm {
         device.setTag(tag);
         device.setName(name);
         device.setDescription(description);
-        device.setDevice_type(device_type);
+        device.setDeviceType(device_type);
     }
 
     
