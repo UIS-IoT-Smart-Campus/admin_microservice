@@ -1,14 +1,10 @@
 package com.iot.admin.admin.dto;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.iot.admin.admin.entity.Device;
 import com.iot.admin.admin.entity.DeviceType;
-
-import org.springframework.lang.Nullable;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,10 +25,9 @@ public class DeviceForm {
     
     private DeviceType device_type;
 
-    @Nullable
-    private long device_parent;
+    private Long device_parent;
 
-    private long gateway;
+    private Long gateway;
 
     public Device getEntity(){
         Device device = new Device();
