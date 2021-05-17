@@ -55,10 +55,10 @@ public class Device {
     @Enumerated(EnumType.STRING)
     private DeviceType deviceType;
 
-    @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Device deviceParent;
 
-    @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Gateway gateway;
     
 
@@ -78,6 +78,7 @@ public class Device {
         tag = tag.toUpperCase();
     }
 
-
-    
+    public Device(Long id) {
+        this.id  = id;
+    }
 }

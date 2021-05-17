@@ -29,7 +29,6 @@ public class DeviceServiceImpl implements DeviceService {
         validateFields(formData);
 
         Device device = formData.getEntity();
-        System.out.println(device.getTag());
         DeviceDetails device_detail = new DeviceDetails();
         device_detail.setEntity(deviceRepository.save(device));
         return device_detail;

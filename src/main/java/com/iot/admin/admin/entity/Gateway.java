@@ -63,7 +63,8 @@ public class Gateway {
     protected void onUpdate(){
         tag = tag.toUpperCase();
     }
-    
-    
 
+    public Gateway(Long id) {
+        this.id = id;
+    }
 }
