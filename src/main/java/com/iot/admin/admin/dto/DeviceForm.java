@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import com.iot.admin.admin.entity.Device;
 import com.iot.admin.admin.entity.DeviceType;
 import com.iot.admin.admin.entity.Gateway;
+import com.iot.admin.admin.utils.validations.EnumValue;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,8 @@ public class DeviceForm {
 
     private String description;
     
-    private DeviceType device_type;
+    @EnumValue(enumClass = DeviceType.class, message = "Invalid device type")
+    private String device_type;
 
     private Long device_parent;
 
@@ -40,7 +42,7 @@ public class DeviceForm {
         device.setTag(tag);
         device.setName(name);
         device.setDescription(description);
-        device.setDeviceType(device_type);
+        device.setDeviceType(DeviceType.valueOf(device_type));
 
         assignRelationships(device);
     }
