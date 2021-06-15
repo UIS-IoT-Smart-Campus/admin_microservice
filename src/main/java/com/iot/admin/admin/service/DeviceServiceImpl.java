@@ -2,14 +2,21 @@ package com.iot.admin.admin.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import javax.transaction.Transactional;
 
 import com.iot.admin.admin.dto.DeviceDetails;
 import com.iot.admin.admin.dto.DeviceForm;
 import com.iot.admin.admin.entity.Device;
 import com.iot.admin.admin.errors.FieldException;
 import com.iot.admin.admin.repository.DeviceRepository;
+import com.iot.admin.admin.utils.Pagination;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -46,6 +53,61 @@ public class DeviceServiceImpl implements DeviceService {
         return list_details;
     }
 
+
+    @Override
+    public Page<DeviceDetails> paginate(Map<String,String> params) {
+        Pageable pageRequest = Pagination.pageRequest(params);
+        Page<Device> device_list = deviceRepository.findAll(pageRequest);
+        List<DeviceDetails> deviceDetails = new ArrayList<>();
+        for(Device d: device_list.getContent()){
+            DeviceDetails device_details = new DeviceDetails();
+            device_details.setEntity(d);
+            deviceDetails.add(device_details);
+        }
+        Page<DeviceDetails> pageResult = new PageImpl<>(deviceDetails, pageRequest, device_list.getTotalElements());
+        return pageResult;
+    }
+
+
+    @Override
+    public DeviceDetails findByTag(String tag) {
+
+        //Database Validations
+        validateExistsTag(tag);
+
+        DeviceDetails detail = new DeviceDetails();
+        Device device = deviceRepository.findByTag(tag);
+        detail.setEntity(device);
+        return detail;
+    }
+
+    
+    @Override
+    public void update(DeviceForm formData, String tag) {
+
+        //Database Validations
+        validateExistsTag(tag);
+        
+        //New Tag validation.
+        if(!tag.equalsIgnoreCase(formData.getTag())){
+            validateFields(formData);
+        }
+        
+        Device device = deviceRepository.findByTag(tag);
+        formData.setEntity(device);        
+        deviceRepository.save(device);
+    }
+
+
+    @Transactional
+    @Override
+    public boolean deleteByTag(String tag) {
+        long deleted = deviceRepository.deleteByTag(tag);
+        return deleted > 0;
+    }
+
+
+
     /**
      * Validates the given fields for a device, throws an exception if any
      * validation fails.
@@ -75,5 +137,11 @@ public class DeviceServiceImpl implements DeviceService {
         }
     }
 
+    //Method to consult if tag exist
+    private void validateExistsTag(String tag) {
+        if (!deviceRepository.existsByTag(tag.toUpperCase())) {
+            throw new FieldException("tag", "This TAG doesn't exist.");
+        }
+    }
 
 }
