@@ -1,10 +1,12 @@
 package com.iot.admin.admin.dto;
 
-
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iot.admin.admin.entity.Device;
+import com.iot.admin.admin.entity.Property;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +30,9 @@ public class DeviceDetails {
 
     private String ipv4_addresss;
 
-    private Long device_parent;
+    private long device_parent;
+
+    private List<PropertyDetails> properties_list = new ArrayList<>();
 
     //private Long gateway;
 
@@ -41,6 +45,12 @@ public class DeviceDetails {
         updateAt = device.getUpdatedAt();
         is_gateway = device.getIs_gateway();
         ipv4_addresss = device.getIpv4_address();
+
+        for(Property p:device.getProperties()){
+            PropertyDetails propertyDetails = new PropertyDetails();
+            propertyDetails.setEntity(p);
+            properties_list.add(propertyDetails);
+        }
 
         if (device.getDeviceParent() != null) {
             device_parent = device.getDeviceParent().getId();

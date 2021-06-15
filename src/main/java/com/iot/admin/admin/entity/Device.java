@@ -1,6 +1,7 @@
 package com.iot.admin.admin.entity;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -63,8 +64,8 @@ public class Device {
     @ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Device deviceParent;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Set<Property> properties;
+    @OneToMany(mappedBy = "deviceParent", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Property> properties;
 
 
     @Column(nullable = false,columnDefinition = "tinyint(1) default 0") 

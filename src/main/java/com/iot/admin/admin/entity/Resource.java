@@ -1,5 +1,6 @@
 package com.iot.admin.admin.entity;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,6 +44,27 @@ public class Resource {
     private Device deviceId;
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Set<Property> properties;
+    private List<Property> properties;
+
+
+    /*
+    * This method is executed before create
+    */
+    @PrePersist
+    protected void onCreate(){
+        tag = tag.toUpperCase();
+    }
+
+    /*
+    * This method is executed before update
+    */
+    @PreUpdate
+    protected void onUpdate(){
+        tag = tag.toUpperCase();
+    }
+
+    public Resource(Long id) {
+        this.id  = id;
+    }
 
 }

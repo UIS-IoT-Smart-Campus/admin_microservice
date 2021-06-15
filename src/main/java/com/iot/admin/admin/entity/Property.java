@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.Data;
@@ -29,10 +30,12 @@ public class Property {
 
     private String description;
 
-    @ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(nullable = true)
     private Device deviceParent;
 
-    @ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(nullable = true)
     private Resource resourceParent;
 
 
