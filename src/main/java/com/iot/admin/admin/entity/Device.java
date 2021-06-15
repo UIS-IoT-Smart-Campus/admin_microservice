@@ -1,17 +1,20 @@
 package com.iot.admin.admin.entity;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+/*import javax.persistence.EnumType;
+import javax.persistence.Enumerated;*/
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
@@ -52,14 +55,28 @@ public class Device {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
+    /*
     @Enumerated(EnumType.STRING)
     private DeviceType deviceType;
+    */
 
     @ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Device deviceParent;
 
-    @ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    private Gateway gateway;
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Property> properties;
+
+
+    @Column(nullable = false,columnDefinition = "tinyint(1) default 0") 
+    private Boolean is_gateway=false;
+
+    @Column(length = 20)
+    private String ipv4_address;
+
+    @ManyToMany
+    private Set<Topic> topics;
+
+
     
 
     /*

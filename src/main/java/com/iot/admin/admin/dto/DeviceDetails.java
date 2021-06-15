@@ -24,9 +24,13 @@ public class DeviceDetails {
     @JsonProperty("update_at")
     private Date updateAt;
 
+    private Boolean is_gateway;
+
+    private String ipv4_addresss;
+
     private Long device_parent;
 
-    private Long gateway;
+    //private Long gateway;
 
     public void setEntity(Device device){
         id = device.getId();
@@ -35,12 +39,15 @@ public class DeviceDetails {
         description = device.getDescription();
         createdAt = device.getCreatedAt();
         updateAt = device.getUpdatedAt();
+        is_gateway = device.getIs_gateway();
+        ipv4_addresss = device.getIpv4_address();
+
         if (device.getDeviceParent() != null) {
             device_parent = device.getDeviceParent().getId();
         }
-        if (device.getGateway() != null) {
+        /*if (device.getGateway() != null) {
             gateway = device.getGateway().getId();
-        }
+        }*/
     }
     
 }

@@ -4,9 +4,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.iot.admin.admin.entity.Device;
-import com.iot.admin.admin.entity.DeviceType;
-import com.iot.admin.admin.entity.Gateway;
-import com.iot.admin.admin.utils.validations.EnumValue;
+//import com.iot.admin.admin.entity.DeviceType;
+//import com.iot.admin.admin.entity.Gateway;
+//import com.iot.admin.admin.utils.validations.EnumValue;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,12 +25,16 @@ public class DeviceForm {
 
     private String description;
     
+    private Boolean is_gateway;
+
+    private String ipv4_address;
+
+    /*
     @EnumValue(enumClass = DeviceType.class, message = "Invalid device type")
-    private String device_type;
+    private String device_type;*/
 
     private Long device_parent;
 
-    private Long gateway;
 
     public Device getEntity(){
         Device device = new Device();
@@ -42,7 +46,9 @@ public class DeviceForm {
         device.setTag(tag);
         device.setName(name);
         device.setDescription(description);
-        device.setDeviceType(DeviceType.valueOf(device_type));
+        device.setIs_gateway(is_gateway);
+        device.setIpv4_address(ipv4_address);
+        /*device.setDeviceType(DeviceType.valueOf(device_type));*/
 
         assignRelationships(device);
     }
@@ -54,15 +60,15 @@ public class DeviceForm {
      */
     private void assignRelationships(Device device) {
         Device deviceParentEntity = null;
-        Gateway gatewayEntity = null;
+        //Gateway gatewayEntity = null;
 
         if (device_parent != null)
             deviceParentEntity = new Device(device_parent);
-
+        /*
         if (gateway != null)
-            gatewayEntity = new Gateway(gateway);
+            gatewayEntity = new Gateway(gateway);*/
 
         device.setDeviceParent(deviceParentEntity);
-        device.setGateway(gatewayEntity);
+        /*device.setGateway(gatewayEntity);*/
     }
 }

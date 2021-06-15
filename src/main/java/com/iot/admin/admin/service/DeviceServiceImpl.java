@@ -8,7 +8,6 @@ import com.iot.admin.admin.dto.DeviceForm;
 import com.iot.admin.admin.entity.Device;
 import com.iot.admin.admin.errors.FieldException;
 import com.iot.admin.admin.repository.DeviceRepository;
-import com.iot.admin.admin.repository.GatewayRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +18,6 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private DeviceRepository deviceRepository;
 
-    @Autowired
-    private GatewayRepository gatewayRepository;
 
     @Override
     public DeviceDetails create(DeviceForm formData) {
@@ -57,7 +54,6 @@ public class DeviceServiceImpl implements DeviceService {
      */
     private void validateFields(DeviceForm formData) {
         validateTag(formData.getTag());
-        validateGateway(formData.getGateway());
         validateDeviceParent(formData.getDevice_parent());
     }
 
@@ -79,15 +75,5 @@ public class DeviceServiceImpl implements DeviceService {
         }
     }
 
-    /**
-     * If the gateway ID is not null, checks if it exists in database.
-     * 
-     * @param deviceId the gateway ID, can be null.
-     */
-    private void validateGateway(Long gatewayId) {
-        if (gatewayId != null && !gatewayRepository.existsById(gatewayId)) {
-            throw new FieldException("gateway", "Gateway invalid");
-        }
-    }
 
 }
