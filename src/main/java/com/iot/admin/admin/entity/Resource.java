@@ -1,7 +1,6 @@
 package com.iot.admin.admin.entity;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
@@ -40,12 +40,12 @@ public class Resource {
     @Enumerated(EnumType.STRING)
     private ResourceType resourceType;
 
-    @ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Device deviceId;
+    @ManyToOne
+    @JoinColumn(nullable = true)
+    private Device deviceParent;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "resourceParent", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Property> properties;
-
 
     /*
     * This method is executed before create

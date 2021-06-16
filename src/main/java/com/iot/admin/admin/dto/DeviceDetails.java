@@ -7,6 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iot.admin.admin.entity.Device;
 import com.iot.admin.admin.entity.Property;
+import com.iot.admin.admin.entity.Resource;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,8 @@ public class DeviceDetails {
 
     private List<PropertyDetails> properties_list = new ArrayList<>();
 
+    private List<ResourceDetails> resources_list = new ArrayList<>();
+
     //private Long gateway;
 
     public void setEntity(Device device){
@@ -46,10 +49,20 @@ public class DeviceDetails {
         is_gateway = device.getIs_gateway();
         ipv4_addresss = device.getIpv4_address();
 
-        for(Property p:device.getProperties()){
-            PropertyDetails propertyDetails = new PropertyDetails();
-            propertyDetails.setEntity(p);
-            properties_list.add(propertyDetails);
+        if(device.getProperties() != null){
+            for(Property p:device.getProperties()){
+                PropertyDetails propertyDetails = new PropertyDetails();
+                propertyDetails.setEntity(p);
+                properties_list.add(propertyDetails);
+            }
+        }
+        
+        if(device.getResources() != null){
+            for(Resource r:device.getResources()){
+                ResourceDetails resourceDetail = new ResourceDetails();
+                resourceDetail.setEntity(r);
+                resources_list.add(resourceDetail);
+            }
         }
 
         if (device.getDeviceParent() != null) {

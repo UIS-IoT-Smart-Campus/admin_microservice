@@ -67,6 +67,9 @@ public class Device {
     @OneToMany(mappedBy = "deviceParent", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Property> properties;
 
+    @OneToMany(mappedBy = "deviceParent", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Resource> resources;
+
 
     @Column(nullable = false,columnDefinition = "tinyint(1) default 0") 
     private Boolean is_gateway=false;
