@@ -1,5 +1,7 @@
 package com.iot.admin.admin.service;
 
+import javax.transaction.Transactional;
+
 import com.iot.admin.admin.dto.ResourceDetails;
 import com.iot.admin.admin.dto.ResourceForm;
 import com.iot.admin.admin.entity.Resource;
@@ -29,6 +31,22 @@ public class ResourceServiceImpl implements ResourceService{
         ResourceDetails resource_detail = new ResourceDetails();
         resource_detail.setEntity(repository.save(resource));
         return resource_detail;
+    }
+
+    @Override
+    public void update(ResourceForm formData, Long id) {
+        // Validates device fields.
+        validateFields(formData);
+        Resource resource = repository.getOne(id);
+        formData.setEntity(resource);
+        repository.save(resource);
+    }
+
+
+    @Transactional
+    @Override
+    public void deleteById(Long id){
+        repository.deleteById(id);
     }
 
 

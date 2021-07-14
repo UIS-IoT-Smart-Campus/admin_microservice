@@ -11,5 +11,20 @@ public interface ResourceService {
      * @param formData resource data to save
      */
     ResourceDetails create(ResourceForm formData);
+
+     /**
+     * 
+     * @param fromData data from form
+     * @param id is the current resorce id
+     */
+    void update(ResourceForm fromData, Long id);
+
+    /**
+     * Delete a resource by id from database. Throws a exception if it doesn't 
+     * exist.
+     * 
+     * @param id the resource id.
+     */
+    void deleteById(Long id);
     
 }
