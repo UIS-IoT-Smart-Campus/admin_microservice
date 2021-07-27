@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.iot.admin.admin.entity.Property;
 import com.iot.admin.admin.entity.Resource;
+import com.iot.admin.admin.entity.ResourceType;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,9 @@ public class ResourceDetails {
     private String tag;
     private String name;
     private String description;
+    private ResourceType resource_type;
     private long device_parent;
+
 
     private List<PropertyDetails> properties_list = new ArrayList<>();
 
@@ -26,6 +29,7 @@ public class ResourceDetails {
         tag = resource.getTag();
         name = resource.getName();
         description = resource.getDescription();
+        resource_type = resource.getResourceType();
 
         if(resource.getProperties()!=null){
             for(Property p:resource.getProperties()){

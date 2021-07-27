@@ -46,7 +46,9 @@ public class ResourceServiceImpl implements ResourceService{
     @Transactional
     @Override
     public void deleteById(Long id){
-        repository.deleteById(id);
+        if(validateExist(id)){
+            repository.deleteById(id);
+        }        
     }
 
 
@@ -72,5 +74,13 @@ public class ResourceServiceImpl implements ResourceService{
             throw new FieldException("device_parent", "Device parent invalid");
         }
     }
+
+    // Method for validate if propertie is already exists
+    private boolean validateExist(Long id) {
+        if (!repository.existsById(id)) {
+            return false;
+        } return true;
+    }
+
     
 }

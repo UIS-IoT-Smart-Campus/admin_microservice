@@ -48,7 +48,9 @@ public class PropertyServiceImpl implements PropertyService{
     @Transactional
     @Override
     public void deleteById(Long id){
-        repository.deleteById(id);
+        if(validateExist(id)){
+            repository.deleteById(id);
+        }        
     }
 
     
@@ -80,16 +82,12 @@ public class PropertyServiceImpl implements PropertyService{
         }
     }
 
-     /**
-     * If the resource ID is not null, checks if it exists in database.
-     * 
-     * @param resourceId the resource ID, can be null.
-     *
-    private void validateResourceParent(Long resourceId) {
-        if (resourceId != null && !deviceRepository.existsById(deviceId)) {
-            throw new FieldException("device_parent", "Device parent invalid");
-        }
-    }*/
+    // Method for validate if propertie is already exists
+    private boolean validateExist(Long id) {
+        if (!repository.existsById(id)) {
+            return false;
+        } return true;
+    }
 
     
 }

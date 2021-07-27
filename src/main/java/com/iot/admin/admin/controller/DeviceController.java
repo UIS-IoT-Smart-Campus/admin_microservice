@@ -55,9 +55,9 @@ public class DeviceController {
     }
 
     @PutMapping("/tag/{tag}")
-    public void update(@RequestBody @Valid DeviceForm formData, @PathVariable String tag){
+    public DeviceDetails update(@RequestBody @Valid DeviceForm formData, @PathVariable String tag){
         tag = tag.toUpperCase();
-        service.update(formData, tag);
+        return service.update(formData, tag);
     }
 
     @DeleteMapping("/tag/{tag}")

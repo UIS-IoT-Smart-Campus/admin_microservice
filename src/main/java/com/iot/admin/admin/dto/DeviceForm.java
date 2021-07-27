@@ -62,7 +62,7 @@ public class DeviceForm {
         Device deviceParentEntity = null;
         //Gateway gatewayEntity = null;
 
-        if (device_parent != null)
+        if (device_parent != null && device_parent != 0)
             deviceParentEntity = new Device(device_parent);
         /*
         if (gateway != null)

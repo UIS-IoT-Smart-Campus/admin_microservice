@@ -29,6 +29,8 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public DeviceDetails create(DeviceForm formData) {
 
+        System.out.println(formData);
+
         // Validates device fields.
         validateFields(formData);
 
@@ -83,7 +85,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     
     @Override
-    public void update(DeviceForm formData, String tag) {
+    public DeviceDetails update(DeviceForm formData, String tag) {
 
         //Database Validations
         validateExistsTag(tag);
@@ -94,8 +96,11 @@ public class DeviceServiceImpl implements DeviceService {
         }
         
         Device device = deviceRepository.findByTag(tag);
-        formData.setEntity(device);        
-        deviceRepository.save(device);
+        formData.setEntity(device);
+        DeviceDetails device_detail = new DeviceDetails();
+        device_detail.setEntity(deviceRepository.save(device));
+        return device_detail;      
+        
     }
 
 
@@ -132,7 +137,7 @@ public class DeviceServiceImpl implements DeviceService {
      * @param deviceId the device ID, can be null.
      */
     private void validateDeviceParent(Long deviceId) {
-        if (deviceId != null && !deviceRepository.existsById(deviceId)) {
+        if (deviceId != null && deviceId !=0 && !deviceRepository.existsById(deviceId)) {
             throw new FieldException("device_parent", "Device parent invalid");
         }
     }

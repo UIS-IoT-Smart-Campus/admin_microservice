@@ -8,6 +8,7 @@ import com.iot.admin.admin.service.PropertyService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,8 +38,9 @@ public class PropertyController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable Long id){        
+    public boolean deleteById(@PathVariable Long id){        
         service.deleteById(id);
+        return true;
     }
     
 }

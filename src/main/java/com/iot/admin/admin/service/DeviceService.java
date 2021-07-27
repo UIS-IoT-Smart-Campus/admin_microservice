@@ -46,7 +46,7 @@ public interface DeviceService {
      * @param fromData data from form
      * @param tag is the current device tag
      */
-    void update(DeviceForm fromData, String tag);
+    DeviceDetails update(DeviceForm fromData, String tag);
 
     /**
      * Delete a device by tag from database. Throws a exception if it doesn't 

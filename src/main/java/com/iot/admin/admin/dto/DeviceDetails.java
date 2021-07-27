@@ -29,7 +29,7 @@ public class DeviceDetails {
 
     private Boolean is_gateway;
 
-    private String ipv4_addresss;
+    private String ipv4_address;
 
     private long device_parent;
 
@@ -47,7 +47,7 @@ public class DeviceDetails {
         createdAt = device.getCreatedAt();
         updateAt = device.getUpdatedAt();
         is_gateway = device.getIs_gateway();
-        ipv4_addresss = device.getIpv4_address();
+        ipv4_address = device.getIpv4_address();
 
         if(device.getProperties() != null){
             for(Property p:device.getProperties()){

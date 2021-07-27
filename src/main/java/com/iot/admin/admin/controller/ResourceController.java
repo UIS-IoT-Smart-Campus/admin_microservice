@@ -39,8 +39,9 @@ public class ResourceController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable Long id){        
+    public boolean deleteById(@PathVariable Long id){        
         service.deleteById(id);
+        return true;
     }
 
 
