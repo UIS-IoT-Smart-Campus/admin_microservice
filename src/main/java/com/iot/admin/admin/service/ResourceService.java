@@ -12,6 +12,13 @@ public interface ResourceService {
      */
     ResourceDetails create(ResourceForm formData);
 
+    /**
+     * 
+     * Returun a resource by tag
+     * @return {@link ResourceDetails}
+     */
+    ResourceDetails findByTag(String tag);
+
      /**
      * 
      * @param fromData data from form
