@@ -35,6 +35,8 @@ public class DeviceForm {
 
     private Long device_parent;
 
+    private String method;
+
 
     public Device getEntity(){
         Device device = new Device();

@@ -50,7 +50,7 @@ public class ResourceServiceImpl implements ResourceService{
     public void update(ResourceForm formData, Long id) {
         // Validates device fields.
         validateFields(formData);
-        Resource resource = repository.getOne(id);
+        Resource resource = repository.getById(id);
         formData.setEntity(resource);
         repository.save(resource);
     }

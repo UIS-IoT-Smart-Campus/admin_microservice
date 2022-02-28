@@ -39,7 +39,7 @@ public class PropertyServiceImpl implements PropertyService{
     public void update(PropertyForm formData, Long id) {
         // Validates device fields.
         validateFields(formData);
-        Property property = repository.getOne(id);
+        Property property = repository.getById(id);
         formData.setEntity(property);
         repository.save(property);
     }

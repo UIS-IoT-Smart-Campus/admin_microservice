@@ -28,9 +28,6 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public DeviceDetails create(DeviceForm formData) {
-
-        System.out.println(formData);
-
         // Validates device fields.
         validateFields(formData);
 
