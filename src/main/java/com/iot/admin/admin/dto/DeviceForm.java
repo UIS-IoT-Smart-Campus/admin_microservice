@@ -1,5 +1,8 @@
 package com.iot.admin.admin.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -7,6 +10,8 @@ import com.iot.admin.admin.entity.Device;
 //import com.iot.admin.admin.entity.DeviceType;
 //import com.iot.admin.admin.entity.Gateway;
 //import com.iot.admin.admin.utils.validations.EnumValue;
+import com.iot.admin.admin.entity.Property;
+import com.iot.admin.admin.entity.Resource;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,19 +20,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DeviceForm {
 
-    @NotNull(message = "Tag doesn't be null.")
-    @NotEmpty(message = "Tag not empty.")
-    private String tag;
-
-    @NotNull(message = "Name doesn't be null.")
-    @NotEmpty(message = "Name not empty.")
+    @NotNull(message = "Name can't be null.")
+    @NotEmpty(message = "Name can't be empty.")
     private String name;
 
-    private String description;
-    
-    private Boolean is_gateway;
+    private String description;    
 
-    private String ipv4_address;
+    private List<PropertyForm> properties;
+
+    private List<ResourceForm> resources;
 
     /*
     @EnumValue(enumClass = DeviceType.class, message = "Invalid device type")
@@ -45,11 +46,29 @@ public class DeviceForm {
     }
 
     public void setEntity(Device device){
-        device.setTag(tag);
         device.setName(name);
         device.setDescription(description);
-        device.setIs_gateway(is_gateway);
-        device.setIpv4_address(ipv4_address);
+
+        if(properties != null){
+            List<Property> list_properties = new ArrayList<>();
+            for(PropertyForm propForm:properties){
+                Property prop = new Property();
+                propForm.setEntity(prop);
+                list_properties.add(prop);
+            }
+            device.setProperties(list_properties);
+        }
+
+        if(resources != null){
+            List<Resource> list_resources = new ArrayList<>();
+            for(ResourceForm resoForm:resources){
+                Resource resource = new Resource();
+                resoForm.setEntity(resource);
+                list_resources.add(resource);
+            }
+            device.setResources(list_resources);
+        }
+       
         /*device.setDeviceType(DeviceType.valueOf(device_type));*/
 
         assignRelationships(device);

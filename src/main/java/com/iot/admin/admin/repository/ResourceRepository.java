@@ -5,8 +5,5 @@ import com.iot.admin.admin.entity.Resource;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ResourceRepository extends JpaRepository<Resource,Long>{
-
-    boolean existsByTag(String tag);
-
-    Resource findByTag(String tag);    
+  
 }

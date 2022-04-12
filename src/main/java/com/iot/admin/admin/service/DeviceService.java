@@ -35,27 +35,19 @@ public interface DeviceService {
 
     /**
      * 
-     * Returun a device by tag
-     * @return {@link DeviceDetails}
-     */
-    DeviceDetails findByTag(String tag);
-
-
-    /**
-     * 
      * @param fromData data from form
-     * @param tag is the current device tag
+     * @param id is the current device id
      */
-    DeviceDetails update(DeviceForm fromData, String tag);
+    DeviceDetails update(DeviceForm fromData, Long id);
 
     /**
      * Delete a device by tag from database. Throws a exception if it doesn't 
      * exist.
      * 
-     * @param tag the device tag.
+     * @param id the device id.
      * @return True or falce
      */
-    boolean deleteByTag(String tag);
+    boolean delete(Long id);
 
 
 }

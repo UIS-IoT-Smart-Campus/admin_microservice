@@ -9,8 +9,12 @@ import javax.transaction.Transactional;
 import com.iot.admin.admin.dto.DeviceDetails;
 import com.iot.admin.admin.dto.DeviceForm;
 import com.iot.admin.admin.entity.Device;
+import com.iot.admin.admin.entity.Property;
+import com.iot.admin.admin.entity.Resource;
 import com.iot.admin.admin.errors.FieldException;
 import com.iot.admin.admin.repository.DeviceRepository;
+import com.iot.admin.admin.repository.PropertyRepository;
+import com.iot.admin.admin.repository.ResourceRepository;
 import com.iot.admin.admin.utils.Pagination;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,10 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Autowired
     private DeviceRepository deviceRepository;
+    @Autowired
+    private PropertyRepository propertiesRepository;
+    @Autowired
+    private ResourceRepository resourceRepository;
 
 
     @Override
@@ -32,8 +40,37 @@ public class DeviceServiceImpl implements DeviceService {
         validateFields(formData);
 
         Device device = formData.getEntity();
+        //device.setTag(generateTag(device.getName(),device.getIs_gateway()));
         DeviceDetails device_detail = new DeviceDetails();
-        device_detail.setEntity(deviceRepository.save(device));
+        Device saveDevice = deviceRepository.save(device);
+
+        // Guardar Propiedades
+        if(device.getProperties()!=null){
+            for(Property prop:device.getProperties()){
+                prop.setDeviceParent(saveDevice);
+                prop = propertiesRepository.save(prop);            
+            }
+        }
+        
+        // Guardar Recursos
+        if(device.getResources()!=null){
+            for(Resource resource:device.getResources()){
+
+                //resource.setTag(generateResourceTag(resource.getName(), device.getTag()));
+                resource.setDeviceParent(device);
+                resource = resourceRepository.save(resource); 
+                
+                if(resource.getProperties()!=null){
+                    for(Property propRe:resource.getProperties()){
+                        propRe.setResourceParent(resource);
+                        propRe = propertiesRepository.save(propRe);
+                    }
+                }
+                
+            }
+        }
+        
+        device_detail.setEntity(device);
         return device_detail;
 
     }
@@ -68,31 +105,15 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
 
-    @Override
-    public DeviceDetails findByTag(String tag) {
-
-        //Database Validations
-        validateExistsTag(tag);
-
-        DeviceDetails detail = new DeviceDetails();
-        Device device = deviceRepository.findByTag(tag);
-        detail.setEntity(device);
-        return detail;
-    }
-
     
     @Override
-    public DeviceDetails update(DeviceForm formData, String tag) {
+    public DeviceDetails update(DeviceForm formData, Long id) {
 
-        //Database Validations
-        validateExistsTag(tag);
-        
+                
         //New Tag validation.
-        if(!tag.equalsIgnoreCase(formData.getTag())){
-            validateFields(formData);
-        }
+        validateFields(formData);
         
-        Device device = deviceRepository.findByTag(tag);
+        Device device = deviceRepository.getById(id);
         formData.setEntity(device);
         DeviceDetails device_detail = new DeviceDetails();
         device_detail.setEntity(deviceRepository.save(device));
@@ -103,9 +124,9 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Transactional
     @Override
-    public boolean deleteByTag(String tag) {
-        long deleted = deviceRepository.deleteByTag(tag);
-        return deleted > 0;
+    public boolean delete(Long id) {
+        deviceRepository.deleteById(id);
+        return true;
     }
 
 
@@ -117,16 +138,9 @@ public class DeviceServiceImpl implements DeviceService {
      * @param formData the device data to save.
      */
     private void validateFields(DeviceForm formData) {
-        validateTag(formData.getTag());
         validateDeviceParent(formData.getDevice_parent());
     }
 
-    // Method for validate if a new tag is already exists
-    private void validateTag(String tag) {
-        if (deviceRepository.existsByTag(tag.toUpperCase())) {
-            throw new FieldException("tag", "The tag is already exist");
-        }
-    }
 
     /**
      * If the device ID is not null, checks if it exists in database.
@@ -139,11 +153,27 @@ public class DeviceServiceImpl implements DeviceService {
         }
     }
 
-    //Method to consult if tag exist
-    private void validateExistsTag(String tag) {
-        if (!deviceRepository.existsByTag(tag.toUpperCase())) {
-            throw new FieldException("tag", "This TAG doesn't exist.");
+    
+    /*
+    //Metodo para generar TAGs para dispositivos.
+    private String generateTag(String name,Boolean isGateway){
+
+        String tagInit = "D";
+
+        if(isGateway){
+            tagInit = "DG";
         }
+        
+        String totalDevices = Long.toString(deviceRepository.count()+1);
+        String tag = tagInit + name.substring(0,1).toUpperCase() +  totalDevices;
+        return tag;
     }
+
+    //Metodo para generar TAGs para dispositivos.
+    private String generateResourceTag(String name,String deviceTag){        
+        String totalDevices = Long.toString(deviceRepository.findByTag(deviceTag).getResources().size()+1);
+        String tag = deviceTag + name.substring(0,1).toUpperCase() +  totalDevices;
+        return tag;
+    }*/
 
 }

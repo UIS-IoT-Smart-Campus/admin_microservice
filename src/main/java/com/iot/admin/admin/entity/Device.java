@@ -7,8 +7,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-/*import javax.persistence.EnumType;
-import javax.persistence.Enumerated;*/
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,8 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -37,16 +33,11 @@ public class Device {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true,length = 10, nullable = false)
-    private String tag;
-
     @Column(nullable = false)
     private String name;
 
     private String description;
-
-    @Column(nullable = false,columnDefinition = "tinyint(1) default 0") 
-    private Boolean enabled=false;
+    
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -64,40 +55,17 @@ public class Device {
     @ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Device deviceParent;
 
+    @ManyToMany
+    private Set<Category> categories;
+
     @OneToMany(mappedBy = "deviceParent", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Property> properties;
 
     @OneToMany(mappedBy = "deviceParent", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Resource> resources;
-
-
-    @Column(nullable = false,columnDefinition = "tinyint(1) default 0") 
-    private Boolean is_gateway=false;
-
-    @Column(length = 20)
-    private String ipv4_address;
+    private List<Resource> resources; 
 
     @ManyToMany
-    private Set<Topic> topics;
-
-
-    
-
-    /*
-    * This method is executed before create
-    */
-    @PrePersist
-    protected void onCreate(){
-        tag = tag.toUpperCase();
-    }
-
-    /*
-    * This method is executed before update
-    */
-    @PreUpdate
-    protected void onUpdate(){
-        tag = tag.toUpperCase();
-    }
+    private Set<Topic> topics;    
 
     public Device(Long id) {
         this.id  = id;

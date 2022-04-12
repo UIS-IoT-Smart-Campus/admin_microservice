@@ -34,19 +34,6 @@ public class ResourceServiceImpl implements ResourceService{
     }
 
     @Override
-    public ResourceDetails findByTag(String tag) {
-
-        //Database Validations
-        validateExistsTag(tag);
-
-        ResourceDetails detail = new ResourceDetails();
-        Resource resource = repository.findByTag(tag);
-        detail.setEntity(resource);
-        return detail;
-    }
-
-
-    @Override
     public void update(ResourceForm formData, Long id) {
         // Validates device fields.
         validateFields(formData);
@@ -93,14 +80,5 @@ public class ResourceServiceImpl implements ResourceService{
         if (!repository.existsById(id)) {
             return false;
         } return true;
-    }
-
-    //Method to consult if tag exist
-    private void validateExistsTag(String tag) {
-        if (!repository.existsByTag(tag.toUpperCase())) {
-            throw new FieldException("tag", "This TAG doesn't exist.");
-        }
-    }
-
-    
+    }    
 }
