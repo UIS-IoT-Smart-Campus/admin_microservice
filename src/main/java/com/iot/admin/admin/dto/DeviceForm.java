@@ -1,11 +1,14 @@
 package com.iot.admin.admin.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.iot.admin.admin.entity.Category;
 import com.iot.admin.admin.entity.Device;
 //import com.iot.admin.admin.entity.DeviceType;
 //import com.iot.admin.admin.entity.Gateway;
@@ -29,6 +32,8 @@ public class DeviceForm {
     private List<PropertyForm> properties;
 
     private List<ResourceForm> resources;
+
+    private List<Long> categories;
 
     /*
     @EnumValue(enumClass = DeviceType.class, message = "Invalid device type")
@@ -67,6 +72,16 @@ public class DeviceForm {
                 list_resources.add(resource);
             }
             device.setResources(list_resources);
+        }
+
+        if(categories!= null){
+            Set<Category> list_categories = new HashSet<Category>();
+            for(Long categoryIdForm:categories){
+                Category category = new Category();
+                category.setId(categoryIdForm);
+                list_categories.add(category);
+            }
+            device.setCategories(list_categories);
         }
        
         /*device.setDeviceType(DeviceType.valueOf(device_type));*/

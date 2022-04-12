@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.iot.admin.admin.entity.Category;
 import com.iot.admin.admin.entity.Device;
 import com.iot.admin.admin.entity.Property;
 import com.iot.admin.admin.entity.Resource;
@@ -33,6 +34,8 @@ public class DeviceDetails {
 
     private List<ResourceDetails> resources = new ArrayList<>();
 
+    private List<CategoryDetails> categories = new ArrayList<>();
+
     //private Long gateway;
 
     public void setEntity(Device device){
@@ -55,6 +58,14 @@ public class DeviceDetails {
                 ResourceDetails resourceDetail = new ResourceDetails();
                 resourceDetail.setEntity(r);
                 resources.add(resourceDetail);
+            }
+        }
+
+        if(device.getCategories() != null){
+            for(Category category:device.getCategories()){
+                CategoryDetails categoryDetails = new CategoryDetails();
+                categoryDetails.setEntity(category);
+                categories.add(categoryDetails);
             }
         }
 

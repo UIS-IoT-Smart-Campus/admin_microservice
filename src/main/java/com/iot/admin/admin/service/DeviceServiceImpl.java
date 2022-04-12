@@ -1,17 +1,22 @@
 package com.iot.admin.admin.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import com.iot.admin.admin.dto.DeviceDetails;
 import com.iot.admin.admin.dto.DeviceForm;
+import com.iot.admin.admin.entity.Category;
 import com.iot.admin.admin.entity.Device;
 import com.iot.admin.admin.entity.Property;
 import com.iot.admin.admin.entity.Resource;
 import com.iot.admin.admin.errors.FieldException;
+import com.iot.admin.admin.repository.CategoryRepository;
 import com.iot.admin.admin.repository.DeviceRepository;
 import com.iot.admin.admin.repository.PropertyRepository;
 import com.iot.admin.admin.repository.ResourceRepository;
@@ -32,6 +37,8 @@ public class DeviceServiceImpl implements DeviceService {
     private PropertyRepository propertiesRepository;
     @Autowired
     private ResourceRepository resourceRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
 
     @Override
@@ -42,12 +49,29 @@ public class DeviceServiceImpl implements DeviceService {
         Device device = formData.getEntity();
         //device.setTag(generateTag(device.getName(),device.getIs_gateway()));
         DeviceDetails device_detail = new DeviceDetails();
-        Device saveDevice = deviceRepository.save(device);
+
+        // Establecer datos Categorías
+        if(device.getCategories()!=null){
+            Set<Category> list_categories = new HashSet<Category>();
+            for(Category category:device.getCategories()){
+                Optional<Category> findCategory = categoryRepository.findById(category.getId());
+                if(findCategory.isEmpty()){
+                    throw new FieldException("Category", "The Category with ID "+Long.toString(category.getId())+" Don't exist.");
+                } else {
+                    category = findCategory.get();
+                    list_categories.add(category);
+                }
+                              
+            }
+            device.setCategories(list_categories);
+        }
+
+        device = deviceRepository.save(device);
 
         // Guardar Propiedades
         if(device.getProperties()!=null){
             for(Property prop:device.getProperties()){
-                prop.setDeviceParent(saveDevice);
+                prop.setDeviceParent(device);
                 prop = propertiesRepository.save(prop);            
             }
         }
@@ -68,7 +92,7 @@ public class DeviceServiceImpl implements DeviceService {
                 }
                 
             }
-        }
+        }        
         
         device_detail.setEntity(device);
         return device_detail;
@@ -139,6 +163,15 @@ public class DeviceServiceImpl implements DeviceService {
      */
     private void validateFields(DeviceForm formData) {
         validateDeviceParent(formData.getDevice_parent());
+
+        if(formData.getCategories()!=null){            
+            for(Long idCat:formData.getCategories()){
+                Optional<Category> findCategory = categoryRepository.findById(idCat);
+                if(findCategory.isEmpty()){
+                    throw new FieldException("Category", "The Category with ID "+Long.toString(idCat)+" Don't exist.");
+                }                               
+            }           
+        }
     }
 
 
