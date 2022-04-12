@@ -1,10 +1,8 @@
 package com.iot.admin.admin.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -51,18 +49,8 @@ public class DeviceServiceImpl implements DeviceService {
         DeviceDetails device_detail = new DeviceDetails();
 
         // Establecer datos Categorías
-        if(device.getCategories()!=null){
-            Set<Category> list_categories = new HashSet<Category>();
-            for(Category category:device.getCategories()){
-                Optional<Category> findCategory = categoryRepository.findById(category.getId());
-                if(findCategory.isEmpty()){
-                    throw new FieldException("Category", "The Category with ID "+Long.toString(category.getId())+" Don't exist.");
-                } else {
-                    category = findCategory.get();
-                    list_categories.add(category);
-                }
-                              
-            }
+        if(formData.getCategories()!=null){
+            Set<Category> list_categories = validateCategories(formData);           
             device.setCategories(list_categories);
         }
 
@@ -163,15 +151,22 @@ public class DeviceServiceImpl implements DeviceService {
      */
     private void validateFields(DeviceForm formData) {
         validateDeviceParent(formData.getDevice_parent());
+    }
 
-        if(formData.getCategories()!=null){            
-            for(Long idCat:formData.getCategories()){
-                Optional<Category> findCategory = categoryRepository.findById(idCat);
-                if(findCategory.isEmpty()){
-                    throw new FieldException("Category", "The Category with ID "+Long.toString(idCat)+" Don't exist.");
-                }                               
-            }           
-        }
+    /**
+     * Validates the given fields for a device, throws an exception if any
+     * validation fails.
+     * 
+     * @param formData the device data to save.
+     */
+    private Set<Category> validateCategories(DeviceForm formData) {
+
+        Set<Category> list_categories = categoryRepository.findByIdIn(formData.getCategories());
+        if(list_categories.size()!=formData.getCategories().size()){
+                    throw new FieldException("Category", "A given category doesn't exist.");                      
+        }   
+
+        return list_categories;
     }
 
 
