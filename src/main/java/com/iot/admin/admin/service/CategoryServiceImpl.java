@@ -48,7 +48,6 @@ public class CategoryServiceImpl implements CategoryService{
         
         Category category = categoryRepository.getById(id);
         if(!category.getName().equals(formData.getName())){
-            System.out.println(category);
             validateName(formData);
         }
         formData.setEntity(category);
@@ -73,7 +72,7 @@ public class CategoryServiceImpl implements CategoryService{
     private void validateName(CategoryForm formData) {
         Category category = categoryRepository.findByName(formData.getName());
         if(category != null){
-            throw new FieldException("category", "Category name is already exist");
+            throw new FieldException("name", "Category name is already exist");
         }
 
     }

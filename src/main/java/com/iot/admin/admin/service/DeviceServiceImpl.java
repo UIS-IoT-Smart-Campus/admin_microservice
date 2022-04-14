@@ -169,7 +169,7 @@ public class DeviceServiceImpl implements DeviceService {
 
         Set<Category> list_categories = categoryRepository.findByIdIn(formData.getCategories());
         if(list_categories.size()!=formData.getCategories().size()){
-                    throw new FieldException("Category", "A given category doesn't exist.");                      
+                    throw new FieldException("categories", "A given category doesn't exist.");                      
         }   
 
         return list_categories;

@@ -9,6 +9,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
@@ -31,6 +33,10 @@ public class VirtualDevice {
 
     @Column(unique = true,length = 10, nullable = false)
     private String tag;
+
+    @ManyToOne
+    @JoinColumn(nullable = true)
+    private Device deviceReference;
 
     @Enumerated(EnumType.STRING)
     private VirtualDeviceStatus status;
