@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,8 +32,8 @@ public class VirtualDevice {
     @Column(unique = true,length = 10, nullable = false)
     private String tag;
 
-    @Column(nullable = false,columnDefinition = "tinyint(1) default 0") 
-    private Boolean enabled=false;
+    @Enumerated(EnumType.STRING)
+    private VirtualDeviceStatus status;
 
     @Column(nullable = false,columnDefinition = "tinyint(1) default 0") 
     private Boolean is_gateway=false;

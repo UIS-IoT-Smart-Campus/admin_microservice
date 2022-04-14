@@ -123,9 +123,15 @@ public class DeviceServiceImpl implements DeviceService {
 
                 
         //New Tag validation.
-        validateFields(formData);
-        
+        validateFields(formData);        
         Device device = deviceRepository.getById(id);
+        
+        // Establecer datos Categorías
+        if(formData.getCategories()!=null){
+            Set<Category> list_categories = validateCategories(formData);           
+            device.setCategories(list_categories);
+        }
+
         formData.setEntity(device);
         DeviceDetails device_detail = new DeviceDetails();
         device_detail.setEntity(deviceRepository.save(device));

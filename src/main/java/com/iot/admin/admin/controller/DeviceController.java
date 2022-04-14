@@ -50,16 +50,15 @@ public class DeviceController {
     }
 
 
-    @PutMapping("/tag/{tag}")
+    @PutMapping("/{id}")
     public DeviceDetails update(@RequestBody @Valid DeviceForm formData, @PathVariable Long id){
         return service.update(formData, id);
     }
 
-    @DeleteMapping("/tag/{tag}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public boolean delete(@PathVariable Long id){        
         return service.delete(id);
     }
-
     
 }

@@ -21,14 +21,16 @@ import lombok.NoArgsConstructor;
 public class ResourceForm {
 
 
-    @NotNull(message = "Name doesn't be null.")
-    @NotEmpty(message = "Name not empty.")
+    @NotNull(message = "Name can't be null.")
+    @NotEmpty(message = "Name can't be empty.")
     private String name;
 
     private String description;
 
+    @NotNull(message = "Type can't be null.")
+    @NotEmpty(message = "Type can't empty.")
     @Enumerated(EnumType.STRING)
-    private String resource_type;
+    private String type;
 
     @NotNull(message = "Device Parent doesn't be null.")
     private Long device_parent;
@@ -46,7 +48,7 @@ public class ResourceForm {
 
         resource.setName(name);
         resource.setDescription(description);
-        resource.setResourceType(ResourceType.valueOf(resource_type));
+        resource.setType(ResourceType.valueOf(type));
 
         if(properties != null){
             List<Property> list_properties = new ArrayList<>();

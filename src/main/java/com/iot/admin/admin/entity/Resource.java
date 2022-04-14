@@ -33,7 +33,7 @@ public class Resource {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private ResourceType resourceType;
+    private ResourceType type;
 
     @ManyToOne
     @JoinColumn(nullable = true)

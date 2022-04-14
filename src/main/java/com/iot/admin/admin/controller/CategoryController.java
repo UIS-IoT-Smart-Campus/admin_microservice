@@ -39,12 +39,12 @@ public class CategoryController {
         return service.create(data);
     }
 
-    @PutMapping("/id/{id}")
+    @PutMapping("/{id}")
     public CategoryDetails update(@RequestBody @Valid CategoryForm formData, @PathVariable Long id){
         return service.update(formData, id);
     }
 
-    @DeleteMapping("/id/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public boolean delete(@PathVariable Long id){        
         return service.delete(id);

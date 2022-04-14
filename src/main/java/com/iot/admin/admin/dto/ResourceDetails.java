@@ -17,7 +17,7 @@ public class ResourceDetails {
     private long id;
     private String name;
     private String description;
-    private ResourceType resource_type;
+    private ResourceType type;
     private long device_parent;
 
 
@@ -27,7 +27,7 @@ public class ResourceDetails {
         id = resource.getId();
         name = resource.getName();
         description = resource.getDescription();
-        resource_type = resource.getResourceType();
+        type = resource.getType();
 
         if(resource.getProperties()!=null){
             for(Property p:resource.getProperties()){
