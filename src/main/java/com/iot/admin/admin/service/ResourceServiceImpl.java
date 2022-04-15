@@ -60,8 +60,8 @@ public class ResourceServiceImpl implements ResourceService{
      * @param formData the resource data to save.
      */
     private void validateFields(ResourceForm formData) {
-        if(formData.getDevice_parent() != null)
-            validateDeviceParent(formData.getDevice_parent());
+        if(formData.getDeviceParent() != null)
+            validateDeviceParent(formData.getDeviceParent());
     }
 
     /**

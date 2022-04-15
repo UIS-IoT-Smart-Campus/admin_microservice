@@ -33,7 +33,7 @@ public class ResourceForm {
     private String type;
 
     @NotNull(message = "Device Parent doesn't be null.")
-    private Long device_parent;
+    private Long deviceParent;
 
     private List<PropertyForm> properties;
 
@@ -72,8 +72,8 @@ public class ResourceForm {
         Device deviceParentEntity = null;
         //Gateway gatewayEntity = null;
 
-        if (device_parent != null)
-            deviceParentEntity = new Device(device_parent);
+        if (deviceParent != null)
+            deviceParentEntity = new Device(deviceParent);
         /*
         if (gateway != null)
             gatewayEntity = new Gateway(gateway);*/
