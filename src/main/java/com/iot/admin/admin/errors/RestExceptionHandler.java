@@ -33,8 +33,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFoundExeption(EntityNotFoundException ex, WebRequest request){
         Map<String,Object> errors = new HashMap<>();
-        errors.put("msg",ex.getMessage());
-        return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
+        errors.put("msg", "Resource not found");
+        return new ResponseEntity<>(errors,HttpStatus.NOT_FOUND);
     }
 
     
