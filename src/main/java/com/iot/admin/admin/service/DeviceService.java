@@ -32,6 +32,11 @@ public interface DeviceService {
     */
     List<DeviceDetails> findAll();
 
+    /**
+     * Returns a device by ID.
+     * @return
+     */
+    DeviceDetails findById(Long id);
 
     /**
      * 

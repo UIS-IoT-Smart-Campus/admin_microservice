@@ -101,6 +101,13 @@ public class DeviceServiceImpl implements DeviceService {
         return list_details;
     }
 
+    @Override
+    public DeviceDetails findById(Long id) {
+        Device device = deviceRepository.getById(id);
+        DeviceDetails details = new DeviceDetails();
+        details.setEntity(device);
+        return details;
+    }
 
     @Override
     public Page<DeviceDetails> paginate(Map<String,String> params) {

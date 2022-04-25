@@ -49,6 +49,10 @@ public class DeviceController {
         return service.create(data);
     }
 
+    @GetMapping("/{id}")
+    public DeviceDetails findById(@PathVariable Long id){
+        return service.findById(id);
+    }
 
     @PutMapping("/{id}")
     public DeviceDetails update(@RequestBody @Valid DeviceForm formData, @PathVariable Long id){
