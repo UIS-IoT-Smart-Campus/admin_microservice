@@ -34,15 +34,20 @@ public class VirtualDevice {
     @Column(unique = true,length = 10, nullable = false)
     private String tag;
 
+    @Column(nullable = false)
+    private String name;
+
     @ManyToOne
     @JoinColumn(nullable = true)
     private Device deviceReference;
 
     @Enumerated(EnumType.STRING)
-    private VirtualDeviceStatus status;
+    private VirtualDeviceStatus status = VirtualDeviceStatus.INACTIVE;
 
     @Column(nullable = false,columnDefinition = "tinyint(1) default 0") 
-    private Boolean is_gateway=false;
+    private Boolean isGateway = false;
+
+    private String description;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
