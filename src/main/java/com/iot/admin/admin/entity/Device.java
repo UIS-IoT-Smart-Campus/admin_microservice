@@ -33,11 +33,13 @@ public class Device {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     private String description;
-    
+
+    private boolean gateway = false;
+       
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

@@ -25,7 +25,9 @@ public class DeviceForm {
     @NotEmpty(message = "Name can't be empty.")
     private String name;
 
-    private String description;    
+    private String description;
+
+    private boolean gateway;
 
     private List<PropertyForm> properties;
 
@@ -51,6 +53,7 @@ public class DeviceForm {
     public void setEntity(Device device){
         device.setName(name);
         device.setDescription(description);
+        device.setGateway(gateway);
 
         if(properties != null){
             List<Property> list_properties = new ArrayList<>();

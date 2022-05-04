@@ -20,6 +20,7 @@ public class DeviceDetails {
     private long id;
     private String name;
     private String description;
+    private boolean gateway;
 
     @JsonProperty("created_at")
     private Date createdAt;
@@ -42,6 +43,7 @@ public class DeviceDetails {
         id = device.getId();
         name = device.getName();
         description = device.getDescription();
+        gateway = device.isGateway();
         createdAt = device.getCreatedAt();
         updateAt = device.getUpdatedAt();
 
