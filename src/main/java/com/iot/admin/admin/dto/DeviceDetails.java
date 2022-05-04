@@ -37,6 +37,8 @@ public class DeviceDetails {
 
     private List<CategoryDetails> categories = new ArrayList<>();
 
+    private List<DeviceDetails> devices = new ArrayList<>();
+
     //private Long gateway;
 
     public void setEntity(Device device){
@@ -71,12 +73,17 @@ public class DeviceDetails {
             }
         }
 
+        if(device.getDevices() != null){
+            for(Device device_son:device.getDevices()){
+                DeviceDetails deviceDetails = new DeviceDetails();
+                deviceDetails.setEntity(device_son);
+                devices.add(deviceDetails);
+            }
+        }
+
         if (device.getDeviceParent() != null) {
             device_parent = device.getDeviceParent().getId();
         }
-        /*if (device.getGateway() != null) {
-            gateway = device.getGateway().getId();
-        }*/
     }
     
 }

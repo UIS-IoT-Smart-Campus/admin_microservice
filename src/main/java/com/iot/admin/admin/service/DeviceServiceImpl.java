@@ -89,7 +89,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public List<DeviceDetails> findAll() {
-        Iterable<Device> list_devices = deviceRepository.findAll();
+        Iterable<Device> list_devices = deviceRepository.findByDeviceParent(null);
         List<DeviceDetails> list_details = new ArrayList<>();
 
         list_devices.forEach(device -> {
@@ -164,6 +164,9 @@ public class DeviceServiceImpl implements DeviceService {
      */
     private void validateFields(DeviceForm formData) {
         validateDeviceParent(formData.getDevice_parent());
+        if(deviceRepository.existsByName(formData.getName())){
+            throw new FieldException("name", "Other device has the same name.");
+        }
     }
 
     /**
@@ -176,7 +179,7 @@ public class DeviceServiceImpl implements DeviceService {
 
         Set<Category> list_categories = categoryRepository.findByIdIn(formData.getCategories());
         if(list_categories.size()!=formData.getCategories().size()){
-                    throw new FieldException("categories", "A given category doesn't exist.");                      
+            throw new FieldException("categories", "A given category doesn't exist.");                      
         }   
 
         return list_categories;

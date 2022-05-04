@@ -54,6 +54,11 @@ public class DeviceController {
         return service.findById(id);
     }
 
+    @GetMapping("/gateway/{id}")
+    public DeviceDetails getGatewayRepresentation(@PathVariable Long id){
+        return service.findById(id);
+    }
+
     @PutMapping("/{id}")
     public DeviceDetails update(@RequestBody @Valid DeviceForm formData, @PathVariable Long id){
         return service.update(formData, id);

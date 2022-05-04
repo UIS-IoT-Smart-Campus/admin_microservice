@@ -66,6 +66,9 @@ public class Device {
     @OneToMany(mappedBy = "deviceParent", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Resource> resources; 
 
+    @OneToMany(mappedBy = "deviceParent", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Device> devices;
+
     @ManyToMany
     private Set<Topic> topics;    
 
