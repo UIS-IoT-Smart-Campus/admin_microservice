@@ -12,6 +12,13 @@ public interface PropertyService {
      */
     PropertyDetails create(PropertyForm formData);
 
+    /**
+     * Fetch a device by ID.
+     * 
+     * @param id ID to find
+     * @return
+     */
+    PropertyDetails findById(Long id);
 
     /**
      * 

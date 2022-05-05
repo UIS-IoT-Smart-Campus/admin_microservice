@@ -53,7 +53,13 @@ public class PropertyServiceImpl implements PropertyService{
         }        
     }
 
-    
+    @Override
+    public PropertyDetails findById(Long id) {
+        Property property = repository.getById(id);
+        PropertyDetails details = new PropertyDetails();
+        details.setEntity(property);
+        return details;
+    }
 
 
     /**
