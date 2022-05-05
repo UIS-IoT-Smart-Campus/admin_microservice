@@ -34,6 +34,14 @@ public class ResourceServiceImpl implements ResourceService{
     }
 
     @Override
+    public ResourceDetails findById(Long id) {
+        Resource resource = repository.getById(id);
+        ResourceDetails details = new ResourceDetails();
+        details.setEntity(resource);
+        return details;
+    }
+
+    @Override
     public void update(ResourceForm formData, Long id) {
         // Validates device fields.
         validateFields(formData);

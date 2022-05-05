@@ -9,6 +9,7 @@ import com.iot.admin.admin.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,7 +31,12 @@ public class ResourceController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResourceDetails create(@RequestBody @Valid ResourceForm data){        
         return service.create(data);
-    }    
+    } 
+    
+    @GetMapping("/{id}")
+    public ResourceDetails findById(@PathVariable Long id){
+        return service.findById(id);
+    }
     
     @PutMapping("/{id}")
     public void update(@RequestBody @Valid ResourceForm formData, @PathVariable Long id){

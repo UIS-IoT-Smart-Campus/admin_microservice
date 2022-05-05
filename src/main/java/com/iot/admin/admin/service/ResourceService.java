@@ -12,6 +12,14 @@ public interface ResourceService {
      */
     ResourceDetails create(ResourceForm formData);
 
+    /**
+     * Fetch a property by ID.
+     * 
+     * @param id ID to find
+     * @return
+     */
+    ResourceDetails findById(Long id);
+
      /**
      * 
      * @param fromData data from form
