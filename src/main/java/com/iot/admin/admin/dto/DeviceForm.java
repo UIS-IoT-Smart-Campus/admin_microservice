@@ -8,9 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.iot.admin.admin.entity.Device;
-//import com.iot.admin.admin.entity.DeviceType;
-//import com.iot.admin.admin.entity.Gateway;
-//import com.iot.admin.admin.utils.validations.EnumValue;
+import com.iot.admin.admin.entity.Environment;
 import com.iot.admin.admin.entity.Property;
 import com.iot.admin.admin.entity.Resource;
 
@@ -40,6 +38,8 @@ public class DeviceForm {
     private String device_type;*/
 
     private Long device_parent;
+
+    private Long enviroment;
 
     private String method;
 
@@ -87,15 +87,15 @@ public class DeviceForm {
      */
     private void assignRelationships(Device device) {
         Device deviceParentEntity = null;
-        //Gateway gatewayEntity = null;
+        Environment enviromentEntity = null;
 
         if (device_parent != null && device_parent != 0)
             deviceParentEntity = new Device(device_parent);
-        /*
-        if (gateway != null)
-            gatewayEntity = new Gateway(gateway);*/
-
+        
+        if (enviroment != null && enviroment != 0)
+        enviromentEntity = new Environment(enviroment);
+    
         device.setDeviceParent(deviceParentEntity);
-        /*device.setGateway(gatewayEntity);*/
+        device.setEnviroment(enviromentEntity);
     }
 }
