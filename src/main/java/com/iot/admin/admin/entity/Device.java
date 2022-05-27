@@ -73,7 +73,7 @@ public class Device {
     private Set<Topic> topics;
 
     @ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Environment enviroment;
+    private Environment environment;
 
     public Device(Long id) {
         this.id  = id;

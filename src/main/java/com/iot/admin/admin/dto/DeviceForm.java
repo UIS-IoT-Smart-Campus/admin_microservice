@@ -39,7 +39,7 @@ public class DeviceForm {
 
     private Long device_parent;
 
-    private Long enviroment;
+    private Long environment;
 
     private String method;
 
@@ -92,10 +92,10 @@ public class DeviceForm {
         if (device_parent != null && device_parent != 0)
             deviceParentEntity = new Device(device_parent);
         
-        if (enviroment != null && enviroment != 0)
-        enviromentEntity = new Environment(enviroment);
+        if (environment != null && environment != 0)
+        enviromentEntity = new Environment(environment);
     
         device.setDeviceParent(deviceParentEntity);
-        device.setEnviroment(enviromentEntity);
+        device.setEnvironment(enviromentEntity);
     }
 }

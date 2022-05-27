@@ -31,7 +31,7 @@ public class DeviceDetails {
 
     private long device_parent;
 
-    private long enviroment;
+    private long environment;
 
     private List<PropertyDetails> properties = new ArrayList<>();
 
@@ -88,7 +88,7 @@ public class DeviceDetails {
         }
 
         if (device.getEnviroment() != null) {
-            enviroment = device.getEnviroment().getId();
+            environment = device.getEnviroment().getId();
         }
     }
     
