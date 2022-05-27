@@ -87,8 +87,8 @@ public class DeviceDetails {
             device_parent = device.getDeviceParent().getId();
         }
 
-        if (device.getEnviroment() != null) {
-            environment = device.getEnviroment().getId();
+        if (device.getEnvironment() != null) {
+            environment = device.getEnvironment().getId();
         }
     }
     
