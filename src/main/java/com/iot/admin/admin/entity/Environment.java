@@ -28,7 +28,7 @@ public class Environment {
 
     private String description;
 
-    @OneToMany(mappedBy = "enviroment", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "environment", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Device> devices;
     
     public Environment(Long id) {
