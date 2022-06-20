@@ -38,6 +38,45 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    //Guardar dispositivos Hijos.
+    private void saveDeviceSon(Device device){
+        if(device.getDevices()!=null){
+            for(Device dev:device.getDevices()){
+                dev.setDeviceParent(device);
+                dev = deviceRepository.save(dev);
+
+                // Guardar Propiedades
+                if(dev.getProperties()!=null){
+                    for(Property prop:dev.getProperties()){
+                        prop.setDeviceParent(dev);
+                        prop = propertiesRepository.save(prop);            
+                    }
+                }
+                
+                // Guardar Recursos
+                if(dev.getResources()!=null){
+                    for(Resource resource:dev.getResources()){
+
+                        resource.setDeviceParent(dev);
+                        resource = resourceRepository.save(resource); 
+                        
+                        if(resource.getProperties()!=null){
+                            for(Property propRe:resource.getProperties()){
+                                propRe.setResourceParent(resource);
+                                propRe = propertiesRepository.save(propRe);
+                            }
+                        }
+                        
+                    }
+                }
+
+                if(dev.getDevices()!=null){
+                    saveDeviceSon(dev);
+                }         
+            }
+        }
+    }
+
 
     @Override
     public DeviceDetails create(DeviceForm formData) {
@@ -80,7 +119,10 @@ public class DeviceServiceImpl implements DeviceService {
                 }
                 
             }
-        }        
+        }
+
+        // Guardar Dispositivos Hijos
+        saveDeviceSon(device);
         
         device_detail.setEntity(device);
         return device_detail;

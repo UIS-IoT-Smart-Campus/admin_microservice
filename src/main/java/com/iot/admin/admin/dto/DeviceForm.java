@@ -31,6 +31,8 @@ public class DeviceForm {
 
     private List<ResourceForm> resources;
 
+    private List<DeviceForm> devices;
+
     private Set<Long> categories;
 
     /*
@@ -40,9 +42,6 @@ public class DeviceForm {
     private Long device_parent;
 
     private Long environment;
-
-    private String method;
-
 
     public Device getEntity(){
         Device device = new Device();
@@ -73,7 +72,17 @@ public class DeviceForm {
                 list_resources.add(resource);
             }
             device.setResources(list_resources);
-        }        
+        }
+        
+        if(devices != null){
+            List<Device> list_devices = new ArrayList<>();
+            for(DeviceForm deviForm:devices){
+                Device sonDevice = new Device();                
+                deviForm.setEntity(sonDevice);
+                list_devices.add(sonDevice);
+            }
+            device.setDevices(list_devices);
+        } 
        
         /*device.setDeviceType(DeviceType.valueOf(device_type));*/
 
