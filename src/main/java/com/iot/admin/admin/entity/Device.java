@@ -78,4 +78,12 @@ public class Device {
     public Device(Long id) {
         this.id  = id;
     }
+    
+    public boolean isEndPoint(){
+        if(this.isGateway()){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -6,8 +6,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
-  kafka:
-    bootstrap-servers: localhost:9092
+      ddl-auto: create
 server:
   port: 8090

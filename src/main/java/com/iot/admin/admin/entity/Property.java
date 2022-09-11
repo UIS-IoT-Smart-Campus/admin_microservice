@@ -1,7 +1,9 @@
 package com.iot.admin.admin.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,12 +30,11 @@ public class Property {
 
     private String description;
 
-    @ManyToOne
-    @JoinColumn(nullable = true)
+    @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Device deviceParent;
 
-    @ManyToOne
-    @JoinColumn(nullable = true)
+    @ManyToOne(optional = true)
+    @JoinColumn()
     private Resource resourceParent;
 
 

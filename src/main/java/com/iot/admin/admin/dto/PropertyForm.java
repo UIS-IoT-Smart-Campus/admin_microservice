@@ -42,6 +42,12 @@ public class PropertyForm {
         assignRelationships(property);
     }
 
+    public void setUpdateEntity(Property property){
+        property.setName(name);
+        property.setValue(value);
+        property.setDescription(description);
+    }
+
     /**
      * Sets relationships with other entities.
      * 
