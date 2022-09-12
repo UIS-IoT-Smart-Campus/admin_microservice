@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -41,7 +42,7 @@ public class Device {
 
     private String description;
 
-    private boolean is_gateway = false;       
+    private boolean is_gateway;       
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -52,13 +53,17 @@ public class Device {
     private Date update_at;
 
     @ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @JoinColumn(name= "fk_parent")
     private Device deviceParent;
 
     @ManyToMany
     private Set<Application> aplications;
 
     @ManyToMany
-    private Set<Resource> resources;    
+    private Set<Resource> resources;
+    
+    @ManyToMany
+    private Set<Property> properties;  
 
     @OneToMany(mappedBy = "deviceParent", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Device> devices;

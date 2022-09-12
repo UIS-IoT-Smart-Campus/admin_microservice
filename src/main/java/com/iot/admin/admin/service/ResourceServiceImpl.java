@@ -1,11 +1,14 @@
 package com.iot.admin.admin.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import com.iot.admin.admin.dto.ResourceDetails;
 import com.iot.admin.admin.dto.ResourceForm;
 import com.iot.admin.admin.entity.Resource;
 import com.iot.admin.admin.repository.ResourceRepository;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,15 @@ public class ResourceServiceImpl implements ResourceService{
     public ResourceDetails create(ResourceForm formData) {
         Resource resource = formData.getEntity();
         ResourceDetails resource_detail = new ResourceDetails();
+        List<Resource> resources = repository.findAll();
+        Long new_id;
+        if(resources.size()>0){
+            Resource last_device = resources.get(resources.size()-1);
+            new_id = last_device.getId()+1L;
+        } else {
+            new_id = 1L;
+        }
+        resource.setGlobal_id(new_id);
         resource = repository.save(resource);
         resource.setGlobal_id(resource.getId());
         resource = repository.save(resource);

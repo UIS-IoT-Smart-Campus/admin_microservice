@@ -3,6 +3,7 @@ package com.iot.admin.admin.dto;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.iot.admin.admin.entity.Device;
 
 import lombok.Data;
@@ -18,6 +19,7 @@ public class DeviceForm {
 
     private String description;
 
+    @JsonAlias("is_gateway")
     private boolean is_gateway;
 
     private Long device_parent;

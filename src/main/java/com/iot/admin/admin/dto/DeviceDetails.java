@@ -2,6 +2,7 @@ package com.iot.admin.admin.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iot.admin.admin.entity.Device;
 
 import lombok.Data;
@@ -15,6 +16,7 @@ public class DeviceDetails {
     private long global_id;
     private String name;
     private String description;
+    @JsonProperty("is_gateway")
     private boolean is_gateway;
     private Date created_at;
     private Date update_at;
@@ -23,6 +25,7 @@ public class DeviceDetails {
     //private Long gateway;
     public void setEntity(Device device){
         id = device.getId();
+        global_id = device.getGlobal_id();
         name = device.getName();
         description = device.getDescription();
         is_gateway = device.is_gateway();

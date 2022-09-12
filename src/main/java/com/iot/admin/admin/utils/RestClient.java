@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
 
 public class RestClient {    
 
-    private String server = "http://192.168.0.125:8090";
     private RestTemplate rest;
     private HttpHeaders headers;
     private HttpStatus status;
@@ -44,7 +43,7 @@ public class RestClient {
     
       public void delete(String uri) {
         HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
-        ResponseEntity<String> responseEntity = rest.exchange(server + uri, HttpMethod.DELETE, requestEntity, String.class);
+        ResponseEntity<String> responseEntity = rest.exchange(uri, HttpMethod.DELETE, requestEntity, String.class);
         this.setStatus(responseEntity.getStatusCode());
       }
     

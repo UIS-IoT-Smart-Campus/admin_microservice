@@ -7,6 +7,9 @@ import javax.validation.Valid;
 
 import com.iot.admin.admin.dto.DeviceDetails;
 import com.iot.admin.admin.dto.DeviceForm;
+import com.iot.admin.admin.dto.DeviceResourcePropertyForm;
+import com.iot.admin.admin.dto.PropertyDetails;
+import com.iot.admin.admin.dto.PropertyForm;
 import com.iot.admin.admin.service.DeviceService;
 import com.iot.admin.admin.utils.Pagination;
 
@@ -68,6 +71,30 @@ public class DeviceController {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public boolean delete(@PathVariable Long id){        
         return service.delete(id);
+    }
+
+    @PostMapping("/resource/{device_id}")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public boolean createResource(@RequestBody @Valid DeviceResourcePropertyForm data,@PathVariable Long device_id){        
+        return service.addResource(data,device_id);
+    }
+
+    @DeleteMapping("/resource/{device_id}")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public boolean deleteResource(@RequestBody @Valid DeviceResourcePropertyForm data,@PathVariable Long device_id){        
+        return service.deleteResource(data,device_id);
+    }
+
+    @PostMapping("/property/{device_id}")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public PropertyDetails createProperty(@RequestBody @Valid PropertyForm data,@PathVariable Long device_id){        
+        return service.addProperty(data,device_id);
+    }
+
+    @DeleteMapping("/property/{device_id}")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public boolean deletePorperty(@RequestBody @Valid DeviceResourcePropertyForm data,@PathVariable Long device_id){        
+        return service.deleteProperty(data,device_id);
     }
     
 }
