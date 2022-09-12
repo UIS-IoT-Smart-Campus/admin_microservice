@@ -3,9 +3,7 @@ package com.iot.admin.admin.dto;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.iot.admin.admin.entity.Device;
 import com.iot.admin.admin.entity.Property;
-import com.iot.admin.admin.entity.Resource;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,11 +20,13 @@ public class PropertyForm {
     @NotEmpty(message = "Name not empty.")
     private String value;
 
-    private String description;
+    @NotNull(message = "Type doesn't be null.")
+    @NotEmpty(message = "Type not empty.")
+    private String prop_type;
 
-    private Long device_parent;
-
-    private Long resource_parent;
+    @NotNull(message = "Parend Id doesn't be null.")
+    @NotEmpty(message = "Parend Id  empty.")
+    private Long parent_id;
 
     public Property getEntity(){
         Property property = new Property();
@@ -37,37 +37,8 @@ public class PropertyForm {
     public void setEntity(Property property){
         property.setName(name);
         property.setValue(value);
-        property.setDescription(description);
-
-        assignRelationships(property);
+        property.setProp_type(prop_type);
+        property.setParent_id(parent_id);
     }
 
-    public void setUpdateEntity(Property property){
-        property.setName(name);
-        property.setValue(value);
-        property.setDescription(description);
-    }
-
-    /**
-     * Sets relationships with other entities.
-     * 
-     * @param property property entity instance.
-     */
-    private void assignRelationships(Property property) {
-        Device propertyParentDevice = null;
-        Resource propertyParentResource = null;
-
-        if (device_parent != null){
-            propertyParentDevice = new Device(device_parent);
-            property.setDeviceParent(propertyParentDevice);
-        }
-
-        if (resource_parent != null){
-            propertyParentResource = new Resource(resource_parent);
-            property.setResourceParent(propertyParentResource);
-        }
-    }
-
-
-    
 }

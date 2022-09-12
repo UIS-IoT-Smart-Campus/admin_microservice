@@ -1,15 +1,10 @@
 package com.iot.admin.admin.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.iot.admin.admin.entity.Device;
-import com.iot.admin.admin.entity.Property;
 import com.iot.admin.admin.entity.Resource;
 import com.iot.admin.admin.entity.ResourceType;
 
@@ -30,13 +25,7 @@ public class ResourceForm {
     @NotNull(message = "Type can't be null.")
     @NotEmpty(message = "Type can't empty.")
     @Enumerated(EnumType.STRING)
-    private String type;
-
-    @NotNull(message = "Device Parent doesn't be null.")
-    private Long deviceParent;
-
-    private List<PropertyForm> properties;
-
+    private String resource_type;
 
     public Resource getEntity(){
         Resource resource = new Resource();
@@ -45,42 +34,8 @@ public class ResourceForm {
     }
 
     public void setEntity(Resource resource){
-
         resource.setName(name);
         resource.setDescription(description);
-        resource.setType(ResourceType.valueOf(type));
-
-        if(properties != null){
-            List<Property> list_properties = new ArrayList<>();
-            for(PropertyForm propForm:properties){
-                Property prop = new Property();
-                propForm.setEntity(prop);
-                list_properties.add(prop);
-            }
-            resource.setProperties(list_properties);
-        }
-        
-        assignRelationships(resource);
-    }
-
-    /**
-     * Sets relationships with other entities.
-     * 
-     * @param resource resource entity instance.
-     */
-    private void assignRelationships(Resource resource) {
-        Device deviceParentEntity = null;
-        //Gateway gatewayEntity = null;
-
-        if (deviceParent != null)
-            deviceParentEntity = new Device(deviceParent);
-        /*
-        if (gateway != null)
-            gatewayEntity = new Gateway(gateway);*/
-
-        resource.setDeviceParent(deviceParentEntity);
-        /*device.setGateway(gatewayEntity);*/
-    }
-
-    
+        resource.setResource_type(ResourceType.valueOf(resource_type));
+    }    
 }

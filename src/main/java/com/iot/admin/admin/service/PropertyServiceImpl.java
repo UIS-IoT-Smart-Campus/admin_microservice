@@ -9,12 +9,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iot.admin.admin.dto.PropertyDetails;
 import com.iot.admin.admin.dto.PropertyForm;
-import com.iot.admin.admin.entity.Device;
 import com.iot.admin.admin.entity.Property;
-import com.iot.admin.admin.errors.FieldException;
-import com.iot.admin.admin.repository.DeviceRepository;
 import com.iot.admin.admin.repository.PropertyRepository;
-import com.iot.admin.admin.utils.RestClient;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +29,6 @@ public class PropertyServiceImpl implements PropertyService{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return "";
         
     }
@@ -41,19 +36,14 @@ public class PropertyServiceImpl implements PropertyService{
     @Autowired
     private PropertyRepository repository;
 
-    @Autowired
-    private DeviceRepository deviceRepository;
-
-
     @Override
     public PropertyDetails create(PropertyForm formData) {
-
-        // Validates device fields.
-        validateFields(formData);
-
         Property property = formData.getEntity();
         PropertyDetails property_detail = new PropertyDetails();
-        property_detail.setEntity(repository.save(property));
+        property = repository.save(property);
+        property.setGlobal_id(property.getId());
+        property = repository.save(property);        
+        property_detail.setEntity(property);
         return property_detail;
     }
 
@@ -61,11 +51,11 @@ public class PropertyServiceImpl implements PropertyService{
     @Override
     public void update(PropertyForm formData, Long id) {
         // Validates device fields.
-        validateFields(formData);
         Property property = repository.getById(id);
-        formData.setUpdateEntity(property);
+        formData.setEntity(property);
         repository.save(property);
-        //Sincronizar cambio en dispositivo        
+        //Sincronizar cambio en dispositivo
+        /*  
         Device device_parent = property.getDeviceParent();      
         if(device_parent!=null){            
             for(Property prop:device_parent.getProperties()){
@@ -82,6 +72,7 @@ public class PropertyServiceImpl implements PropertyService{
             }
                     
         }
+         */  
     }
 
 
@@ -101,39 +92,10 @@ public class PropertyServiceImpl implements PropertyService{
         return details;
     }
 
-
-    /**
-     * Validates the given fields for a property, throws an exception if any
-     * validation fails.
-     * 
-     * @param formData the property data to save.
-     */
-    private void validateFields(PropertyForm formData) {
-        if(formData.getDevice_parent() != null)
-            validateDeviceParent(formData.getDevice_parent());
-        //if(formData.getResource_parent() != null)
-            //validateResourceParent(formData.getResource_parent());
-
-    }
-
-
-    /**
-     * If the device ID is not null, checks if it exists in database.
-     * 
-     * @param deviceId the device ID, can be null.
-     */
-    private void validateDeviceParent(Long deviceId) {
-        if (deviceId != null && !deviceRepository.existsById(deviceId)) {
-            throw new FieldException("device_parent", "Device parent invalid");
-        }
-    }
-
     // Method for validate if propertie is already exists
     private boolean validateExist(Long id) {
         if (!repository.existsById(id)) {
             return false;
         } return true;
-    }
-
-    
+    }    
 }

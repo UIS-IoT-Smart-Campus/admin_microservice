@@ -34,53 +34,41 @@ public class Device {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    private Long global_id;
+
+    @Column(nullable = false, unique = true)
     private String name;
 
     private String description;
 
-    private boolean gateway = false;
-       
+    private boolean is_gateway = false;       
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private Date create_at;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
-
-    /*
-    @Enumerated(EnumType.STRING)
-    private DeviceType deviceType;
-    */
+    private Date update_at;
 
     @ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Device deviceParent;
 
     @ManyToMany
-    private Set<Category> categories;
+    private Set<Application> aplications;
 
-    @OneToMany(mappedBy = "deviceParent", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Property> properties;
-
-    @OneToMany(mappedBy = "deviceParent", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Resource> resources; 
+    @ManyToMany
+    private Set<Resource> resources;    
 
     @OneToMany(mappedBy = "deviceParent", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Device> devices;
-
-    @ManyToMany
-    private Set<Topic> topics;
-
-    @ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Environment environment;
-
+  
     public Device(Long id) {
         this.id  = id;
     }
     
     public boolean isEndPoint(){
-        if(this.isGateway()){
+        if(this.is_gateway()){
             return true;
         } else {
             return false;

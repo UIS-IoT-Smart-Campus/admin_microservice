@@ -10,15 +10,19 @@ import lombok.NoArgsConstructor;
 public class PropertyDetails {
 
     private long id;
+    private long global_id;
     private String name;
     private String value;
-    private String description;
+    private String prop_type;
+    private Long parent_id;
 
     public void setEntity(Property property){
         id = property.getId();
+        global_id = property.getGlobal_id();
         name = property.getName();
         value = property.getValue();
-        description = property.getDescription();
+        prop_type = property.getProp_type();
+        parent_id = property.getParent_id();
     }
     
 }

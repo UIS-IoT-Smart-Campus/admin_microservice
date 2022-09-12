@@ -1,10 +1,16 @@
 package com.iot.admin.admin.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,25 +18,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-public class Property {
-    
+public class Application {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private Long global_id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
-    private String value;
-
-    @Column(nullable = false)
-    private String prop_type;
-
-    @Column(nullable = false)
-    private Long parent_id;
-        
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date create_at;
+    
 }

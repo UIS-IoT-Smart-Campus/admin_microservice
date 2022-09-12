@@ -1,16 +1,9 @@
 package com.iot.admin.admin.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.iot.admin.admin.entity.Device;
-import com.iot.admin.admin.entity.Environment;
-import com.iot.admin.admin.entity.Property;
-import com.iot.admin.admin.entity.Resource;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,23 +18,10 @@ public class DeviceForm {
 
     private String description;
 
-    private boolean gateway;
-
-    private List<PropertyForm> properties;
-
-    private List<ResourceForm> resources;
-
-    private List<DeviceForm> devices;
-
-    private Set<Long> categories;
-
-    /*
-    @EnumValue(enumClass = DeviceType.class, message = "Invalid device type")
-    private String device_type;*/
+    private boolean is_gateway;
 
     private Long device_parent;
 
-    private Long environment;
 
     public Device getEntity(){
         Device device = new Device();
@@ -52,40 +32,7 @@ public class DeviceForm {
     public void setEntity(Device device){
         device.setName(name);
         device.setDescription(description);
-        device.setGateway(gateway);
-
-        if(properties != null){
-            List<Property> list_properties = new ArrayList<>();
-            for(PropertyForm propForm:properties){
-                Property prop = new Property();
-                propForm.setEntity(prop);
-                list_properties.add(prop);
-            }
-            device.setProperties(list_properties);
-        }
-
-        if(resources != null){
-            List<Resource> list_resources = new ArrayList<>();
-            for(ResourceForm resoForm:resources){
-                Resource resource = new Resource();
-                resoForm.setEntity(resource);
-                list_resources.add(resource);
-            }
-            device.setResources(list_resources);
-        }
-        
-        if(devices != null){
-            List<Device> list_devices = new ArrayList<>();
-            for(DeviceForm deviForm:devices){
-                Device sonDevice = new Device();                
-                deviForm.setEntity(sonDevice);
-                list_devices.add(sonDevice);
-            }
-            device.setDevices(list_devices);
-        } 
-       
-        /*device.setDeviceType(DeviceType.valueOf(device_type));*/
-
+        device.set_gateway(is_gateway);
         assignRelationships(device);
     }
 
@@ -96,15 +43,10 @@ public class DeviceForm {
      */
     private void assignRelationships(Device device) {
         Device deviceParentEntity = null;
-        Environment enviromentEntity = null;
 
         if (device_parent != null && device_parent != 0)
             deviceParentEntity = new Device(device_parent);
-        
-        if (environment != null && environment != 0)
-        enviromentEntity = new Environment(environment);
-    
+           
         device.setDeviceParent(deviceParentEntity);
-        device.setEnvironment(enviromentEntity);
     }
 }
