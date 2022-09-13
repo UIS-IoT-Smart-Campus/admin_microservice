@@ -1,10 +1,20 @@
 package com.iot.admin.admin.service;
 
+import java.util.List;
+
 import com.iot.admin.admin.dto.ApplicationDetail;
 import com.iot.admin.admin.dto.ApplicationForm;
+import com.iot.admin.admin.dto.ApplicationServiceForm;
 import com.iot.admin.admin.dto.DeviceApplicationForm;
 
 public interface ApplicationService {
+
+    /**
+     * 
+     *Return list of devices created
+     *@return {@link DeviceDetails}
+    */
+    List<ApplicationDetail> getAll();
 
     /**
      * Saves a new app data in database
@@ -39,5 +49,23 @@ public interface ApplicationService {
      * @return True or false
      */
     boolean deleteDevice(DeviceApplicationForm form,Long app_id);
+
+    /**
+     * Add service to app
+     * 
+     * @param app_id the app id.
+     * @param fromData service data
+     * @return True or false
+     */
+    boolean addService(ApplicationServiceForm form,Long app_id);
+
+    /**
+     * Remove device from app
+     * 
+     * @param app_id the app id.
+     * @param fromData service data
+     * @return True or false
+     */
+    boolean deleteService(ApplicationServiceForm form,Long app_id);
     
 }

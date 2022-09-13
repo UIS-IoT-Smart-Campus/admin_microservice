@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-public class Application {
+public class ServiceModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +34,10 @@ public class Application {
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date create_at;
+    private Date register_at;
 
     @ManyToMany
-    private List<Device> devices;
-    
-    @ManyToMany
-    private List<ServiceModel> services;
+    private List<Resource> resources;
+
     
 }

@@ -1,6 +1,7 @@
 package com.iot.admin.admin.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -13,12 +14,15 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iot.admin.admin.dto.ApplicationDetail;
 import com.iot.admin.admin.dto.ApplicationForm;
+import com.iot.admin.admin.dto.ApplicationServiceForm;
 import com.iot.admin.admin.dto.DeviceApplicationForm;
 import com.iot.admin.admin.entity.Application;
 import com.iot.admin.admin.entity.Device;
 import com.iot.admin.admin.entity.Property;
+import com.iot.admin.admin.entity.ServiceModel;
 import com.iot.admin.admin.repository.ApplicationRepository;
 import com.iot.admin.admin.repository.DeviceRepository;
+import com.iot.admin.admin.repository.ServiceModelRepository;
 import com.iot.admin.admin.utils.RestClient;
 
 @Service
@@ -44,6 +48,22 @@ public class ApplicationServiceImplementation implements ApplicationService{
 
     @Autowired
     private DeviceRepository deviceRepository;
+
+    @Autowired
+    private ServiceModelRepository serviceRepository;
+
+    @Override
+    public List<ApplicationDetail> getAll(){
+        Iterable<Application> list_apps = repository.findAll();
+        List<ApplicationDetail> list_details = new ArrayList<>();
+
+        list_apps.forEach(application -> {
+            ApplicationDetail details = new ApplicationDetail();
+            details.setEntity(application);
+            list_details.add(details);
+        }); 
+        return list_details;
+    }
 
     @Override
     public ApplicationDetail create(ApplicationForm formData) {
@@ -184,6 +204,28 @@ public class ApplicationServiceImplementation implements ApplicationService{
             }  
         }        
         app.getDevices().remove(device);
+        repository.save(app);
+        return true;
+    }
+
+    @Override
+    public boolean addService(ApplicationServiceForm formData,Long app_id) {
+        // Validates device fields.
+        Application app = repository.getById(app_id);
+        Long service_model_id = formData.getService_id();
+        ServiceModel service_model = serviceRepository.getById(service_model_id);            
+        app.getServices().add(service_model);
+        repository.save(app);
+        return true;
+    }
+
+    @Override
+    public boolean deleteService(ApplicationServiceForm formData,Long app_id) {
+        // Validates device fields.
+        Application app = repository.getById(app_id);
+        Long service_model_id = formData.getService_id();
+        ServiceModel service_model = serviceRepository.getById(service_model_id);        
+        app.getServices().remove(service_model);
         repository.save(app);
         return true;
     }
