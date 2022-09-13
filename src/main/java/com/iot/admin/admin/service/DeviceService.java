@@ -49,7 +49,7 @@ public interface DeviceService {
     DeviceDetails update(DeviceForm fromData, Long id);
 
     /**
-     * Delete a device by tag from database. Throws a exception if it doesn't 
+     * Delete a device by id from database. Throws a exception if it doesn't 
      * exist.
      * 
      * @param id the device id.

@@ -52,7 +52,7 @@ public class Device {
     @Temporal(TemporalType.TIMESTAMP)
     private Date update_at;
 
-    @ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name= "fk_parent")
     private Device deviceParent;
 
