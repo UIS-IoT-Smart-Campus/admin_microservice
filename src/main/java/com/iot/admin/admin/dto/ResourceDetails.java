@@ -15,7 +15,6 @@ public class ResourceDetails {
     private String name;
     private String description;
     private ResourceType resource_type;
-    private long device_parent;
 
 
     public void setEntity(Resource resource){

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.iot.admin.admin.dto.ResourceDetails;
 import com.iot.admin.admin.dto.ServiceDetail;
 import com.iot.admin.admin.dto.ServiceForm;
 import com.iot.admin.admin.dto.ServiceResourceForm;
@@ -21,8 +22,7 @@ import com.iot.admin.admin.entity.Resource;
 import com.iot.admin.admin.entity.ServiceModel;
 import com.iot.admin.admin.repository.ResourceRepository;
 import com.iot.admin.admin.repository.ServiceModelRepository;
-
-import redis.clients.jedis.Jedis;
+import com.iot.admin.admin.utils.RedisClient;
 
 
 
@@ -79,15 +79,9 @@ public class ServiceModelServiceImpl implements ServiceModelService{
         service_model.setGlobal_id(new_id);
         service_detail.setEntity(repository.save(service_model));
         //Add queue notification SDA
-        Jedis jedis = new Jedis("localhost", 6379);
-        Map<String, String> message = new HashMap<String, String>();
-        message.put("type", "service");
-        message.put("queue", "create");
+        RedisClient r_client = new RedisClient();
         String service_json = toJsonProperty(service_detail);
-        message.put("content", service_json);
-        String message_json = toJsonProperty(message);
-        jedis.lpush("queue:register", message_json);
-        jedis.close();
+        r_client.put("service", "create", service_json);
         //End queue notification SDA
         return service_detail;
     }
@@ -95,6 +89,14 @@ public class ServiceModelServiceImpl implements ServiceModelService{
     @Transactional
     @Override
     public boolean delete(Long id) {
+        //Add queue notification SDA
+        RedisClient r_client = new RedisClient();
+        ServiceModel service_model = repository.getById(id);
+        ServiceDetail service_model_detail = new ServiceDetail();
+        service_model_detail.setEntity(service_model);
+        String service_json = toJsonProperty(service_model_detail);
+        r_client.put("service", "delete", service_json);
+        //End queue notification SDA
         repository.deleteById(id);
         return true;
     }
@@ -106,6 +108,18 @@ public class ServiceModelServiceImpl implements ServiceModelService{
         Resource resource = resourceRepository.getById(resource_id);               
         service_model.getResources().add(resource);
         repository.save(service_model);
+        //Add queue notification SDA
+        RedisClient r_client = new RedisClient();
+        ResourceDetails resource_detail = new ResourceDetails();
+        resource_detail.setEntity(resource);
+        String resource_json = toJsonProperty(resource_detail);
+        r_client.put("resource", "create", resource_json);
+        Map<String, String> json_content = new HashMap<String, String>();
+        json_content.put("service_id", service_model.getGlobal_id().toString());
+        json_content.put("resource_id", resource.getGlobal_id().toString());
+        String messaje_json = toJsonProperty(json_content);
+        r_client.put("service_resource", "create", messaje_json);
+        //End queue notification SDA
         return true;
     }
 
@@ -116,6 +130,18 @@ public class ServiceModelServiceImpl implements ServiceModelService{
         Resource resource = resourceRepository.getById(resource_id);      
         service_model.getResources().remove(resource);
         repository.save(service_model);
+        //Add queue notification SDA
+        RedisClient r_client = new RedisClient();        
+        Map<String, String> json_content = new HashMap<String, String>();
+        json_content.put("service_id", service_model.getGlobal_id().toString());
+        json_content.put("resource_id", resource.getGlobal_id().toString());
+        String messaje_json = toJsonProperty(json_content);
+        r_client.put("service_resource", "delete", messaje_json);
+        ResourceDetails resource_detail = new ResourceDetails();
+        resource_detail.setEntity(resource);
+        String resource_json = toJsonProperty(resource_detail);
+        r_client.put("resource", "delete", resource_json);
+        //End queue notification SDA
         return true;
     }
     

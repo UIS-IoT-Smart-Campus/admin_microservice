@@ -2,7 +2,9 @@ package com.iot.admin.admin.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -23,6 +25,7 @@ import com.iot.admin.admin.entity.ServiceModel;
 import com.iot.admin.admin.repository.ApplicationRepository;
 import com.iot.admin.admin.repository.DeviceRepository;
 import com.iot.admin.admin.repository.ServiceModelRepository;
+import com.iot.admin.admin.utils.RedisClient;
 import com.iot.admin.admin.utils.RestClient;
 
 @Service
@@ -80,12 +83,25 @@ public class ApplicationServiceImplementation implements ApplicationService{
         }
         app.setGlobal_id(new_id);
         app_detail.setEntity(repository.save(app));
+        //Add queue notification SDA
+        RedisClient r_client = new RedisClient();
+        String app_json = toJsonProperty(app_detail);
+        r_client.put("app", "create", app_json);
+        //End queue notification SDA
         return app_detail;
     }
 
     @Transactional
     @Override
     public boolean delete(Long id) {
+        //Add queue notification SDA
+        Application app = repository.getById(id);
+        ApplicationDetail app_detail = new ApplicationDetail();
+        app_detail.setEntity(app);
+        RedisClient r_client = new RedisClient();
+        String app_json = toJsonProperty(app_detail);
+        r_client.put("app", "delete", app_json);
+        //End queue notification SDA
         repository.deleteById(id);
         return true;
     }
@@ -209,13 +225,20 @@ public class ApplicationServiceImplementation implements ApplicationService{
     }
 
     @Override
-    public boolean addService(ApplicationServiceForm formData,Long app_id) {
-        // Validates device fields.
+    public boolean addService(ApplicationServiceForm formData,Long app_id) {        
         Application app = repository.getById(app_id);
         Long service_model_id = formData.getService_id();
         ServiceModel service_model = serviceRepository.getById(service_model_id);            
         app.getServices().add(service_model);
         repository.save(app);
+        //Add queue notification SDA
+        RedisClient r_client = new RedisClient();
+        Map<String, String> json_content = new HashMap<String, String>();
+        json_content.put("app_id", app.getGlobal_id().toString());
+        json_content.put("service_id", service_model.getGlobal_id().toString());
+        String messaje_json = toJsonProperty(json_content);
+        r_client.put("app_service", "create", messaje_json);
+        //End queue notification SDA
         return true;
     }
 
@@ -227,6 +250,14 @@ public class ApplicationServiceImplementation implements ApplicationService{
         ServiceModel service_model = serviceRepository.getById(service_model_id);        
         app.getServices().remove(service_model);
         repository.save(app);
+        //Add queue notification SDA
+        RedisClient r_client = new RedisClient();
+        Map<String, String> json_content = new HashMap<String, String>();
+        json_content.put("app_id", app.getGlobal_id().toString());
+        json_content.put("service_id", service_model.getGlobal_id().toString());
+        String messaje_json = toJsonProperty(json_content);
+        r_client.put("app_service", "delete", messaje_json);
+        //End queue notification SDA
         return true;
     }
 
