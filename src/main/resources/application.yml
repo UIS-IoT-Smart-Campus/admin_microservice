@@ -1,14 +1,14 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/admindb
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/admindb
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+    properties:
+      hibernate:
+        dialect:org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: create-drop
-logging:
-  level:
-    com: INFO
 server:
   port: 8090

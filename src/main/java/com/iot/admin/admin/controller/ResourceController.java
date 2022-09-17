@@ -2,6 +2,9 @@ package com.iot.admin.admin.controller;
 
 import javax.validation.Valid;
 
+import com.iot.admin.admin.dto.DeviceResourcePropertyForm;
+import com.iot.admin.admin.dto.PropertyDetails;
+import com.iot.admin.admin.dto.PropertyForm;
 import com.iot.admin.admin.dto.ResourceDetails;
 import com.iot.admin.admin.dto.ResourceForm;
 import com.iot.admin.admin.service.ResourceService;
@@ -48,6 +51,18 @@ public class ResourceController {
     public boolean deleteById(@PathVariable Long id){        
         service.deleteById(id);
         return true;
+    }
+
+    @PostMapping("/property/{resource_id}")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public PropertyDetails createProperty(@RequestBody @Valid PropertyForm data,@PathVariable Long resource_id){        
+        return service.addProperty(data,resource_id);
+    }
+
+    @DeleteMapping("/property/{resource_id}")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public boolean deletePorperty(@RequestBody @Valid DeviceResourcePropertyForm data,@PathVariable Long resource_id){        
+        return service.deleteProperty(data,resource_id);
     }
 
 

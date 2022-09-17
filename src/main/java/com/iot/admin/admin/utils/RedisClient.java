@@ -35,10 +35,10 @@ public class RedisClient {
     }
 
     public RedisClient(){
-        this.host = "localhost";
+        this.host = System.getenv("REDIS_HOST");
         this.port = 6379;
         this.namespace = "queue"; 
-        this.queue = "register";  
+        this.queue = "register";
     }
 
     public void put(String type,String queue,String message){

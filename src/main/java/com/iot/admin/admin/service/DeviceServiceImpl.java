@@ -179,12 +179,19 @@ public class DeviceServiceImpl implements DeviceService {
             for(Property prop:deviceParent.getProperties()){
                 if(prop.getName().equals("gateway_ipv4")){
                     String ipv4 = prop.getValue();
-                    String uri = "http://"+ipv4+":5000/resources/api/";
+                    String uri = "http://"+ipv4+":5000/resource/api/";
                     ResourceDetails d_resource = new ResourceDetails();
                     d_resource.setEntity(resource);
                     String r_json = toJsonProperty(d_resource);
                     RestClient client = new RestClient();
                     client.post(uri, r_json);
+                    for(Property prop_r:resource.getProperties()){
+                        String url3 = "http://"+ipv4+":5000/resource/property/create/global/api/"+resource.getGlobal_id()+"/";
+                        PropertyDetails prop_r_detail = new PropertyDetails();
+                        prop_r_detail.setEntity(prop_r);
+                        String prop_r_json = toJsonProperty(prop_r_detail);
+                        client.post(url3, prop_r_json);
+                    }
                     String uri2 = "http://"+ipv4+":5000/device/resource/api/global/"+device.getGlobal_id().toString()+"/";
                     formData.setResource_id(resource.getGlobal_id());
                     String json = toJsonProperty(formData);
@@ -212,9 +219,26 @@ public class DeviceServiceImpl implements DeviceService {
                     String uri = "http://"+ipv4+":5000/device/resource/api/global/delete/"+device.getGlobal_id().toString()+"/";
                     String json = toJsonProperty(formData);
                     RestClient client = new RestClient();
-                    client.post(uri, json);                    
-                    String url2 = "http://"+ipv4+":5000/resources/api/global/"+resource.getGlobal_id().toString()+"/";
+                    client.post(uri, json);
+                    List<Property> list_delete_prop = new ArrayList<>();
+                    //Sincronizar eliminación
+                    for(Property prop_r:resource.getProperties()){
+                        String url_d = "http://"+ipv4+":5000/resource/property/global/api/"+prop_r.getGlobal_id().toString()+"/";
+                        System.out.println(url_d);
+                        RestClient client2 = new RestClient();
+                        client2.delete(url_d);
+                        list_delete_prop.add(prop_r);
+                    }                  
+                    //Eliminar de base de datos
+                    for(Property prop_r:list_delete_prop){
+                        resource.getProperties().remove(prop_r);
+                        resourceRepository.save(resource);
+                        propertyRepository.delete(prop_r);
+                    }
+
+                    String url2 = "http://"+ipv4+":5000/resource/api/global/"+resource.getGlobal_id().toString()+"/";
                     client.delete(url2);
+                    break;
                 }            
             }
         }
